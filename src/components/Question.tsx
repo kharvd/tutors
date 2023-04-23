@@ -24,7 +24,7 @@ export default function Question({
   onChoice: (index: number, choice: number) => void;
 }) {
   const handleChange = (e: any) => {
-    onChoice(index, e.target.value);
+    onChoice(index, parseInt(e.target.value));
   };
 
   return (
