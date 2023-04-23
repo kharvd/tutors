@@ -40,6 +40,7 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
             newAnswers[index] = choice;
             setAnswers(newAnswers);
             setGraded(false);
+            setScore(null);
           }}
         />
       ))}
