@@ -3,7 +3,7 @@ export function Button({
   onClick,
 }: {
   text: string;
-  onClick: () => void;
+  onClick: (e: any) => void;
 }) {
   return (
     <button
