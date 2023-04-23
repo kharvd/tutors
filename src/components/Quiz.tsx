@@ -37,7 +37,7 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
           userCorrect={graded && q.correct_answer == answers[i]}
           userSelected={answers[i]}
           onChoice={(index, choice) => {
-            console.log(index, choice)
+            console.log(index, choice);
             const newAnswers = [...answers];
             newAnswers[index] = choice;
             setAnswers(newAnswers);
