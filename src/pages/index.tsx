@@ -22,12 +22,12 @@ async function summarize(text: string): Promise<string> {
 
 async function getQuiz(text: string): Promise<Quiz> {
   console.log("getting quiz", text);
-  const response = await fetch("/api/quiz", {
+  const response = await fetch("https://tutors-backend-production.up.railway.app/upload", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ document, "useGPT4": false }),
   });
   return response.json();
 }
