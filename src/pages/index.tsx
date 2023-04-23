@@ -27,7 +27,7 @@ async function getQuiz(text: string): Promise<Quiz> {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ document, "useGPT4": false }),
+    body: JSON.stringify({ document: text, "useGPT4": false }),
   });
   return response.json();
 }
