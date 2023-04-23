@@ -1,23 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { Quiz } from "@/types/quiz";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-export type QuestionOption = {
-  text: string;
-  is_correct: boolean;
-};
-
-export type Question = {
-  text: string;
-  options: QuestionOption[];
-};
-
-export type Data = {
-  questions: Question[];
-};
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Quiz>
 ) {
   console.log("req.body", req.body);
   res.status(200).json({
@@ -30,7 +17,7 @@ export default async function handler(
             is_correct: true,
           },
           {
-            text: "Quantifying the strength and direction of the relationship between two variables",
+            text: "Determining causation between two variables",
             is_correct: false,
           },
           {

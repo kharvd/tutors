@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useState } from "react";
-import Question from "../components/Question";
-import type * as Quiz from "./api/quiz";
+import { Quiz } from "@/types/quiz";
+import { Quiz as QuizComponent } from "@/components/Quiz";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +19,7 @@ async function summarize(text: string): Promise<string> {
   return summary;
 }
 
-async function getQuiz(text: string): Promise<Quiz.Data> {
+async function getQuiz(text: string): Promise<Quiz> {
   console.log("getting quiz", text);
   const response = await fetch("/api/quiz", {
     method: "POST",
@@ -34,7 +34,7 @@ async function getQuiz(text: string): Promise<Quiz.Data> {
 export default function Home() {
   const [document, setDocument] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
-  const [quiz, setQuiz] = useState<Quiz.Data | null>(null);
+  const [quiz, setQuiz] = useState<Quiz | null>(null);
 
   return (
     <main className="p-4">
@@ -85,12 +85,9 @@ export default function Home() {
           <div>{summary}</div>
         </div>
       )}
-      
+
       {/* <Question /> */}
-      {quiz && (
-        quiz.questions.map((q) => 
-          <Question key={q.text} question={q} />)
-      )}
+      {quiz && <QuizComponent quiz={quiz} />}
     </main>
   );
 }
