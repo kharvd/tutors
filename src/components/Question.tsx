@@ -17,10 +17,16 @@ import { Question } from "@/types/quiz";
 export default function Question({
   index,
   question,
+  onChoice,
 }: {
   index: number;
   question: Question;
+  onChoice: (index: number, choice: number) => void;
 }) {
+  const handleChange = (e) => {
+    onChoice(index, e.target.value);
+  };
+
   return (
     <div className="pt-4">
       <label className="text-base font-semibold text-gray-900">
@@ -37,6 +43,8 @@ export default function Question({
                 type="radio"
                 name={`question-${index}`}
                 className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                value={i}
+                onChange={handleChange}
               />
               <label
                 htmlFor={`q-${index}-o-${i}`}
