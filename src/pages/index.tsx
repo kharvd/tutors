@@ -85,12 +85,11 @@ export default function Home() {
           <div>{summary}</div>
         </div>
       )}
-      <Question />
+      
+      {/* <Question /> */}
       {quiz && (
-        <div>
-          Quiz:
-          <div>{JSON.stringify(quiz)}</div>
-        </div>
+        quiz.questions.map((q) => 
+          <Question key={q.text} question={q} />)
       )}
     </main>
   );
