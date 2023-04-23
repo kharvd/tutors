@@ -4,14 +4,14 @@ import { Button } from "./Button";
 import Question from "./Question";
 
 export function Quiz({ quiz }: { quiz: Quiz }) {
-  const [answers, setAnswers] = useState<number[]>([]);
+  const [answers, setAnswers] = useState<string[]>([]);
   const [score, setScore] = useState<number | null>(null);
   const [graded, setGraded] = useState<boolean>(false);
 
   function checkAnswers(): number {
     let score = 0;
     for (let i = 0; i < quiz.questions.length; i++) {
-      if (quiz.questions[i].options[answers[i]].is_correct) {
+      if (quiz.questions[i].correct_answer == answers[i]) {
         score++;
       }
     }
@@ -34,8 +34,10 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
           index={i}
           question={q}
           graded={graded}
+          userCorrect={graded && q.correct_answer == answers[i]}
           userSelected={answers[i]}
           onChoice={(index, choice) => {
+            console.log(index, choice)
             const newAnswers = [...answers];
             newAnswers[index] = choice;
             setAnswers(newAnswers);

@@ -18,7 +18,7 @@ export default function Question({
   index,
   question,
   graded,
-  userSelected, // id of selection
+  userCorrect, // if user was correct
   onChoice,
 }: {
   index: number;
@@ -27,7 +27,7 @@ export default function Question({
   onChoice: (index: number, choice: number) => void;
 }) {
   const handleChange = (e: any) => {
-    onChoice(index, parseInt(e.target.value));
+    onChoice(index, e.target.value);
   };
 
   return (    
@@ -54,9 +54,9 @@ export default function Question({
                   className="ml-3 block text-sm font-medium leading-6 text-gray-900"
                 >
                   {option} {graded && 
-                option.is_correct && userSelected == i && <span>👍</span>}
+                userCorrect && <span>👍</span>}
                 {graded && 
-                !option.is_correct && userSelected == i && <span>👎</span>}
+                !userCorrect == i && <span>👎</span>}
                 
                 </label>
               </div>
