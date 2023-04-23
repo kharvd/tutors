@@ -112,54 +112,67 @@ export default function Home() {
 
   return (
     <main className="p-4">
-      <h2 className="text-4xl font-extrabold dark:text-white">Tutorly</h2>
+      {/* <h2 className="text-4xl font-extrabold dark:text-white">Tutorly</h2>
       <p className="my-4 text-lg text-gray-500">
         A tool to help you learn better
-      </p>
-      <label
-        htmlFor="message"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >
-        Class materials
-      </label>
+      </p> */}
+      <h1 className="text-5xl font-extrabold dark:text-white">
+        Tutorly
+        <small className="ml-2 font-semibold text-gray-500 dark:text-gray-400">
+          A tool to help you learn better
+        </small>
+      </h1>
 
-      <textarea
-        id="message"
-        rows={10}
-        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Paste your document here"
-        onChange={(e) => setDocument(e.target.value)}
-      >
-        {document}
-      </textarea>
-      <div className="mt-4 flex space-x-2">
-        <Button
-          text="Summarize"
-          onClick={async (e: any) => {
-            await generateSummaryResponse(e);
-          }}
-        />
-        <Button
-          text="Start Quiz"
-          onClick={async () => {
-            setLoading(true);
-            const quiz = await getQuiz(document);
-            console.log(quiz);
-            setQuiz(quiz);
-            setLoading(false);
-          }}
-        />
-        {loading && <LoadingIndicator />}
-      </div>
-      {summary && (
-        <div>
-          Summary:
-          <div>{summary}</div>
+      <div className="flex flex-row space-y-4 p-4">
+        <div className="w-1/2 mx-auto h-screen">
+          <label
+            htmlFor="message"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Class materials
+          </label>
+
+          <textarea
+            id="message"
+            rows={10}
+            className="h-4/6 block screen p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Paste your document here"
+            onChange={(e) => setDocument(e.target.value)}
+          >
+            {document}
+          </textarea>
+          <div className="mt-4 flex space-x-2">
+            <Button
+              text="Summarize"
+              onClick={async (e: any) => {
+                await generateSummaryResponse(e);
+              }}
+            />
+            <Button
+              text="Start Quiz"
+              onClick={async () => {
+                setLoading(true);
+                const quiz = await getQuiz(document);
+                console.log(quiz);
+                setQuiz(quiz);
+                setLoading(false);
+              }}
+            />
+            {loading && <LoadingIndicator />}
+          </div>
         </div>
-      )}
+        <div className="w-1/2 mx-auto p-4">
+          {summary && (
+            <div>
+              <h3 className="text-3xl font-bold dark:text-white">Summary</h3>
+              <p className="mb-3 text-gray-500 dark:text-gray-400">{summary}</p>
+            </div>
+          )}
 
-      {/* <Question /> */}
-      {quiz && <QuizComponent quiz={quiz} />}
+          {/* <Question /> */}
+          {quiz && <QuizComponent quiz={quiz} />}
+        </div>
+      </div>
     </main>
   );
 }
