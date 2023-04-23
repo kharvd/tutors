@@ -23,7 +23,7 @@ export default function Question({
   question: Question;
   onChoice: (index: number, choice: number) => void;
 }) {
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     onChoice(index, e.target.value);
   };
 
