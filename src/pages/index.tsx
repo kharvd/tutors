@@ -1,24 +1,12 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Quiz } from "@/types/quiz";
 import { Quiz as QuizComponent } from "@/components/Quiz";
 import { Button } from "@/components/Button";
+import Chatbox, { Message } from "@/components/Chat";
 
 const inter = Inter({ subsets: ["latin"] });
-
-// async function summarize(text: string): Promise<string> {
-//   console.log("summarizing text", text);
-//   const response = await fetch("/api/summarize", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ text }),
-//   });
-//   const { summary } = await response.json();
-//   return summary;
-// }
 
 async function getQuiz(text: string): Promise<Quiz> {
   console.log("getting quiz", text);
@@ -61,6 +49,45 @@ export default function Home() {
   const [summary, setSummary] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
+  const [quizAnswers, setQuizAnswers] = useState<string[]>([]);
+  const [initialMessageContent, setInitialMessageContent] = useState<string>("");
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      sender: "system",
+      content: initialMessageContent,
+    },
+  ]);
+
+  useEffect(() => {
+    if (quiz) {
+      console.log("Setting quiz here");
+      console.log(quiz);
+      console.log("String version is:");
+      console.log(JSON.stringify(quiz, null, 2));
+      setInitialMessageContent(JSON.stringify(quiz, null, 2)); // Pretty-print the JSON
+    } else {
+      setInitialMessageContent("Welcome to the chat!");
+    }
+  }, [quiz]);
+
+  const handleAnswersChange = (answers: string[]) => {
+      // Create a copy of the quiz object to avoid modifying the state directly
+    var updatedQuiz = { ...quiz };
+
+    // Iterate through the answers array and add the student_choice field
+    answers.forEach((answer, index) => {
+      if (updatedQuiz && updatedQuiz.questions[index]) {
+        updatedQuiz.questions[index].student_choice = answer;
+      }
+    });
+
+    // Update the quiz state with the new quiz object
+    setQuizAnswers(answers);
+    setQuiz(updatedQuiz);
+
+    console.log("Quiz:");
+    console.log(quiz);
+  };
 
   const generateSummaryResponse = async (
     e: React.MouseEvent<HTMLButtonElement>
@@ -105,6 +132,10 @@ export default function Home() {
       setSummary((prev) => prev + chunkValue);
     }
     setLoading(false);
+  };
+
+  const handleSendMessage = (message: Message) => {
+    setMessages((prevMessages) => [...prevMessages, message]);
   };
 
   return (
@@ -154,7 +185,14 @@ export default function Home() {
       )}
 
       {/* <Question /> */}
-      {quiz && <QuizComponent quiz={quiz} />}
+      {quiz && (
+        <QuizComponent
+          quiz={quiz}
+          onAnswersChange={handleAnswersChange} // Pass the callback function here
+        />
+      )}
+
+      <Chatbox onSendMessage={handleSendMessage} messages={messages} quiz={quiz} />
     </main>
   );
 }

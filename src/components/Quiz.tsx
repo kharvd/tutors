@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "./Button";
 import Question from "./Question";
 
-export function Quiz({ quiz }: { quiz: Quiz }) {
+export function Quiz({ quiz, onAnswersChange }: { quiz: Quiz; onAnswersChange: (answers: string[]) => void }) {
   const [answers, setAnswers] = useState<string[]>([]);
   const [score, setScore] = useState<number | null>(null);
   const [graded, setGraded] = useState<boolean>(false);
@@ -22,8 +22,22 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
     const score = checkAnswers();
     const percentage = (score / quiz.questions.length) * 100;
 
+    console.log(quiz);
+
     setScore(percentage);
     setGraded(true);
+  }
+
+  function onChoice(index: number, choice: string) {
+    console.log(index, choice);
+    const newAnswers = [...answers];
+    newAnswers[index] = choice;
+    setAnswers(newAnswers);
+    setGraded(false);
+    setScore(null);
+
+    // Notify the parent component about the change in answers
+    onAnswersChange(newAnswers);
   }
 
   return (
@@ -36,14 +50,7 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
           graded={graded}
           userCorrect={graded && q.correct_answer == answers[i]}
           userSelected={answers[i]}
-          onChoice={(index, choice) => {
-            console.log(index, choice);
-            const newAnswers = [...answers];
-            newAnswers[index] = choice;
-            setAnswers(newAnswers);
-            setGraded(false);
-            setScore(null);
-          }}
+          onChoice={onChoice}
         />
       ))}
       <div className="pt-4">
