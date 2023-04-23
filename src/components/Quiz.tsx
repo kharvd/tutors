@@ -6,6 +6,7 @@ import Question from "./Question";
 export function Quiz({ quiz }: { quiz: Quiz }) {
   const [answers, setAnswers] = useState<number[]>([]);
   const [score, setScore] = useState<number | null>(null);
+  const [graded, setGraded] = useState<boolean>(false);
 
   function checkAnswers(): number {
     let score = 0;
@@ -22,6 +23,7 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
     const percentage = (score / quiz.questions.length) * 100;
 
     setScore(percentage);
+    setGraded(true);
   }
 
   return (
@@ -31,10 +33,13 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
           key={`question-${i}`}
           index={i}
           question={q}
+          graded={graded}
+          userSelected={answers[i]}
           onChoice={(index, choice) => {
             const newAnswers = [...answers];
             newAnswers[index] = choice;
             setAnswers(newAnswers);
+            setGraded(false);
           }}
         />
       ))}

@@ -17,10 +17,13 @@ import { Question } from "@/types/quiz";
 export default function Question({
   index,
   question,
+  graded,
+  userSelected, // id of selection
   onChoice,
 }: {
   index: number;
   question: Question;
+  correct: boolean;
   onChoice: (index: number, choice: number) => void;
 }) {
   const handleChange = (e: any) => {
@@ -50,7 +53,11 @@ export default function Question({
                 htmlFor={`q-${index}-o-${i}`}
                 className="ml-3 block text-sm font-medium leading-6 text-gray-900"
               >
-                {option.text}
+                {option.text} {graded && 
+                option.is_correct && userSelected == i && <span>👍</span>}
+                {graded && 
+                !option.is_correct && userSelected == i && <span>👎</span>}
+                
               </label>
             </div>
           ))}
