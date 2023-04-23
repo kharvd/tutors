@@ -1,11 +1,8 @@
-export type QuestionOption = {
-  text: string;
-  is_correct: boolean;
-};
 
 export type Question = {
-  text: string;
-  options: QuestionOption[];
+  question_text: string;
+  correc_answer: string;
+  choices: Record<string, string>;
 };
 
 export type Quiz = {
