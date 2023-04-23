@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useState } from "react";
 import Question from "../components/Question";
+import type * as Quiz from "./api/quiz";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,23 @@ async function summarize(text: string): Promise<string> {
   return summary;
 }
 
+async function getQuiz(text: string): Promise<Quiz.Data> {
+  console.log("getting quiz", text);
+  const response = await fetch("/api/quiz", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text }),
+  });
+  return response.json();
+}
+
 export default function Home() {
   const [document, setDocument] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
+  const [quiz, setQuiz] = useState<Quiz.Data | null>(null);
+
   return (
     <main>
       <label
@@ -43,17 +58,34 @@ export default function Home() {
         type="button"
         value="Summarize"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        onClick={(e) => {
-          summarize(document).then((summary) => setSummary(summary));
+        onClick={async (e) => {
+          const summary = await summarize(document);
+          setSummary(summary);
         }}
       />
-      <div>
-        Summary:
-        <div>{summary}</div>
-      </div>
-
+      <input
+        type="button"
+        value="Start Quiz"
+        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        onClick={async (e) => {
+          const quiz = await getQuiz(document);
+          console.log(quiz);
+          setQuiz(quiz);
+        }}
+      />
+      {summary && (
+        <div>
+          Summary:
+          <div>{summary}</div>
+        </div>
+      )}
       <Question />
-
+      {quiz && (
+        <div>
+          Quiz:
+          <div>{JSON.stringify(quiz)}</div>
+        </div>
+      )}
     </main>
   );
 }
