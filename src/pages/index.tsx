@@ -22,13 +22,16 @@ const inter = Inter({ subsets: ["latin"] });
 
 async function getQuiz(text: string): Promise<Quiz> {
   console.log("getting quiz", text);
-  const response = await fetch("https://tutors-backend-production.up.railway.app/upload", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ document: text, "useGPT4": false }),
-  });
+  const response = await fetch(
+    "https://tutors-backend-production.up.railway.app/upload",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ document: text, useGPT4: false }),
+    }
+  );
   return response.json();
 }
 
@@ -129,7 +132,7 @@ export default function Home() {
       >
         {document}
       </textarea>
-      <div className="mt-4">
+      <div className="mt-4 flex space-x-2">
         <Button
           text="Summarize"
           onClick={async (e: any) => {
@@ -139,9 +142,11 @@ export default function Home() {
         <Button
           text="Start Quiz"
           onClick={async () => {
+            setLoading(true);
             const quiz = await getQuiz(document);
             console.log(quiz);
             setQuiz(quiz);
+            setLoading(false);
           }}
         />
         {loading && <LoadingIndicator />}

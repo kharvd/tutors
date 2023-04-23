@@ -52,7 +52,7 @@ export function Quiz({ quiz }: { quiz: Quiz }) {
       {score !== null && (
         <div className="pt-4">
           <div className="text-2xl font-semibold text-gray-900">
-            Your score: {score}%
+            Your score: {score.toFixed(0)}%
           </div>
         </div>
       )}
