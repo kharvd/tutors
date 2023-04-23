@@ -172,7 +172,7 @@ export default function Home() {
           )}
 
           {/* <Question /> */}
-          {quiz && <QuizComponent quiz={quiz} />}
+          {quiz && <QuizComponent document={document} quiz={quiz} />}
         </div>
       </div>
     </main>
