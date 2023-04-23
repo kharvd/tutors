@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { useState } from "react";
 import { Quiz } from "@/types/quiz";
 import { Quiz as QuizComponent } from "@/components/Quiz";
+import { Button } from "@/components/Button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,20 +60,16 @@ export default function Home() {
         {document}
       </textarea>
       <div className="mt-4">
-        <input
-          type="button"
-          value="Summarize"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          onClick={async (e) => {
+        <Button
+          text="Summarize"
+          onClick={async () => {
             const summary = await summarize(document);
             setSummary(summary);
           }}
         />
-        <input
-          type="button"
-          value="Start Quiz"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          onClick={async (e) => {
+        <Button
+          text="Start Quiz"
+          onClick={async () => {
             const quiz = await getQuiz(document);
             console.log(quiz);
             setQuiz(quiz);
