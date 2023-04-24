@@ -22,13 +22,16 @@ const inter = Inter({ subsets: ["latin"] });
 
 async function getQuiz(text: string): Promise<Quiz> {
   console.log("getting quiz", text);
-  const response = await fetch("/api/quiz", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ document: text, useGPT4: false }),
-  });
+  const response = await fetch(
+    "https://tutors-back-end.yrvelez.repl.co/upload",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ document: text, useGPT4: false }),
+    }
+  );
   return response.json();
 }
 
@@ -70,18 +73,15 @@ export default function Home() {
     setLoading(true);
 
     console.log("starting fetch");
-    const response = await fetch(
-      "https://tutors-backend-production.up.railway.app/upload",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: document,
-        }),
-      }
-    );
+    const response = await fetch("/api/summarize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: document,
+      }),
+    });
 
     console.log("response", response);
 
