@@ -23,7 +23,7 @@ const inter = Inter({ subsets: ["latin"] });
 async function getQuiz(text: string): Promise<Quiz> {
   console.log("getting quiz", text);
   const response = await fetch(
-    "https://tutors-back-end.yrvelez.repl.co/upload",
+    "https://tutors-backend-production.up.railway.app/upload",
     {
       method: "POST",
       headers: {
